@@ -1,0 +1,6 @@
+.env
+Pipfile
+Pipfile.lock
+.idea
+__pycache__
+bot.log
