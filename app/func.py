@@ -170,7 +170,7 @@ async def get_category(callback_query: CallbackQuery, state: FSMContext):
 
 async def get_seller_info(user_id):
     async with aiohttp.ClientSession() as session:
-        async with session.get("http://127.0.0.1:8000/api/v1/bot-users") as response:
+        async with session.get("https://elonbotapp.pythonanywhere.com/api/v1/bot-users") as response:
             if response.status == 200:
                 users = await response.json()
                 for user in users:
@@ -311,7 +311,7 @@ async def finish_ad(message: Message, state: FSMContext):
         }
 
         async with aiohttp.ClientSession() as session:
-            async with session.post("http://127.0.0.1:8000/api/v1/car-ads", json=data) as response:
+            async with session.post("https://elonbotapp.pythonanywhere.com/api/v1/car-ads", json=data) as response:
                 if response.status == 201:
                     response_data = await response.json()
                     car_id = response_data['id']
@@ -328,7 +328,7 @@ async def finish_ad(message: Message, state: FSMContext):
                     form_data.add_field('car', str(car_id)) 
                     form_data.add_field('img', img_file, filename=os.path.basename(file_path))
 
-                    async with session.post("http://127.0.0.1:8000/api/v1/car-ads/add_img", data=form_data) as img_response:
+                    async with session.post("https://elonbotapp.pythonanywhere.com/api/v1/car-ads/add_img", data=form_data) as img_response:
                         if img_response.status != 201:
                             error = await img_response.text()
                             await message.answer("E'lon qo'shishda xatolik yuz berdi!")
@@ -446,7 +446,7 @@ async def finish_ad(message: Message, state: FSMContext):
 
         
         async with aiohttp.ClientSession() as session:
-            async with session.post("http://127.0.0.1:8000/api/v1/house-ads", json=data) as response:
+            async with session.post("https://elonbotapp.pythonanywhere.com/api/v1/house-ads", json=data) as response:
                 if response.status == 201:
                     response_data = await response.json()
                     house_id = response_data['id']
@@ -462,7 +462,7 @@ async def finish_ad(message: Message, state: FSMContext):
                     form_data.add_field('house', str(house_id)) 
                     form_data.add_field('img', img_file, filename=os.path.basename(file_path))
 
-                    async with session.post("http://127.0.0.1:8000/api/v1/house-ads/add_img", data=form_data) as img_response:
+                    async with session.post("https://elonbotapp.pythonanywhere.com/api/v1/house-ads/add_img", data=form_data) as img_response:
                         if img_response.status != 201:
                             error = await img_response.text()
                             await message.answer("Kutilmagan xatolik yuz berdi. Iltimos, keyinroq qayta urinib ko'ring.")
@@ -492,7 +492,7 @@ async def show_profile(message: Message):
     user_id = str(message.from_user.id)
 
     async with aiohttp.ClientSession() as session:
-        async with session.get(f"http://127.0.0.1:8000/api/v1/bot-users") as response:
+        async with session.get(f"https://elonbotapp.pythonanywhere.com/api/v1/bot-users") as response:
             if response.status == 200:
                 bot_users = await response.json()
                 user_data = next((user for user in bot_users if user["user_id"] == user_id), None)
@@ -521,7 +521,7 @@ async def show_user_ads(message: Message):
 
     ads_message = "📋 Sizning e'lonlaringiz:\n\n"
     async with aiohttp.ClientSession() as session:
-        async with session.get("http://127.0.0.1:8000/api/v1/car-ads") as car_response:
+        async with session.get("https://elonbotapp.pythonanywhere.com/api/v1/car-ads") as car_response:
             if car_response.status == 200:
                 car_ads = await car_response.json()
                 user_car_ads = [ad for ad in car_ads if ad.get("created_by") == user_number]
@@ -533,7 +533,7 @@ async def show_user_ads(message: Message):
                         f"📅 Yili: {ad['year']}\n\n"
                     )
         
-        async with session.get("http://127.0.0.1:8000/api/v1/house-ads") as house_response:
+        async with session.get("https://elonbotapp.pythonanywhere.com/api/v1/house-ads") as house_response:
             if house_response.status == 200:
                 house_ads = await house_response.json()
                 user_house_ads = [ad for ad in house_ads if ad.get("created_by") == user_number]
